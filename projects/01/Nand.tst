@@ -1,5 +1,5 @@
-output-file Or.out,
-load Or.hdl,
+output-file Nand.out,
+load Nand.hdl,
 output-list a b out,
 set a 0, set b 0,
 eval, output,

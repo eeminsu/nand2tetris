@@ -5,8 +5,7 @@
 
 load Not.hdl,
 output-file Not.out,
-compare-to Not.cmp,
-output-list in%B3.1.3 out%B3.1.3;
+output-list in out;
 
 set in 0,
 eval,
