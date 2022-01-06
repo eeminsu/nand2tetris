@@ -42,5 +42,34 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+    // Put you code here:
+    //zx 구현
+    Mux16(a=x, b=false, sel=zx, out=zxout);
+
+    //nx 구현
+    Not16(in=zxout, out=notx);
+    Mux16(a=zxout, b=notx, sel=nx, out=nxout);
+
+    //zy 구현
+    Mux16(a=y, b=false, sel=zy, out=zyout);
+
+    //ny 구현
+    Not16(in=zyout, out=noty);
+    Mux16(a=zyout, b=noty, sel=ny, out=nyout);
+
+    //f 구현
+    And16(a=nxout, b=nyout, out=andxy);
+    Add16(a=nxout, b=nyout, out=addxy);
+    Mux16(a=andxy, b=addxy, sel=f, out=fxy);
+
+    //no 구현, ng구현
+    Not16(in=fxy, out=notfxy);
+    Mux16(a=fxy, b=notfxy, sel=no, out=out, out[0..7] = lowout, out[8..15] = highout, out[15] = ng);
+
+    //zr 구현
+    Or8Way(in=lowout, out=lowOutState);
+    Or8Way(in=highout, out=highOutState);
+    Or(a=lowOutState, b=highOutState, out=nzr);
+    Not(in=nzr, out=zr);
+   
 }
