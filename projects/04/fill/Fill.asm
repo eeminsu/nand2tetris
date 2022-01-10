@@ -12,3 +12,43 @@
 // the screen should remain fully clear as long as no key is pressed.
 
 // Put your code here.
+
+@SCREEN
+D=A //RAM16384(스크린) 주소값 참조
+@pixel
+M=D //스크린 주소값 pixel에 대입
+
+(LOOP)
+@KBD
+D=M
+@CLEAR
+D;JEQ
+@pixel
+A=M
+M=-1
+@pixel
+D=M
+@24576
+D=D-A
+@LOOP
+D;JEQ
+@pixel
+M=M+1
+@LOOP
+0;JMP
+
+(CLEAR)
+@pixel
+D=M
+@SCREEN
+D=D-A
+@LOOP
+D;JEQ
+@pixel
+M=M-1
+@pixel
+A=M
+M=0
+
+@LOOP
+0;JMP
