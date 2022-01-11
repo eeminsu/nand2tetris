@@ -28,4 +28,16 @@ CHIP Memory {
 
     PARTS:
     // Put your code here:
+
+    //0100 0000 0000 0000부터 16384
+    DMux(in=load, sel=address[14], a=selRam, b=selScreen);
+    
+    RAM16K(in=in, load=selRam, address=address[0..13], out=ramOut);
+    Screen(in=in, load=selScreen, address=address[0..12], out=screenOut);
+    Keyboard(out=kbdOut);
+
+    Mux16(a=ramOut, b=screenOut, sel=address[14], out=rncOut);
+
+    And(a=address[13], b=address[14], out=selKbd);
+    Mux16(a=rncOut, b=kbdOut, sel=selKbd, out=out);
 }

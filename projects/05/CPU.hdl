@@ -40,4 +40,12 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+
+    //명령어 판독
+    Not(in=instruction[15], out=Acommand); //A명령어
+    Not(in=Acoomand, out=Ccommand); //C명령어
+
+    And(a=Acommand, b=instruction[5], out=ALUtoA);
+    
+    
 }
