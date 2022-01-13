@@ -43,9 +43,39 @@ CHIP CPU {
 
     //명령어 판독
     Not(in=instruction[15], out=Acommand); //A명령어
-    Not(in=Acoomand, out=Ccommand); //C명령어
+    Not(in=Acommand, out=Ccommand); //C명령어
 
-    And(a=Acommand, b=instruction[5], out=ALUtoA);
+    //C명령어의 dest에 A가 포함될 경우
+    And(a=Ccommand, b=instruction[5], out=ALUtoA);
+    Or(a=Acommand, b=ALUtoA, out=Aload);
+
+    //A명령어와 ALU출력 중 하나를 A레지스터의 입력으로
+    Mux16(a=instruction, b=aluOut, sel=ALUtoA, out=AregIn);
+    ARegister(in=AregIn, load=Aload, out=AregOut);
+
+    And(a=Ccommand, b=instruction[12], out=inMsel);
+    Mux16(a=AregOut, b=inM, sel=inMsel, out=AorMOut);
+
+    And(a=Ccommand, b=instruction[4], out=Dload);
+    DRegister(in=aluOut, load=Dload, out=DregOut);
+
+    ALU(x=DregOut, y=AorMOut, zx=instruction[11], nx=instruction[10], zy=instruction[9], 
+    ny=instruction[8], f=instruction[7], no=instruction[6], out=outM, zr=zrOut, ng=ngOut, out = aluOut);
+
+    And(a=Ccommand, b=instruction[3], out=writeM);
+    Or16(a=false, b=AregOut, out[0..14]=addressM);
+
+    And(a=zrOut, b=instruction[1], out=JEQ);
+    And(a=ngOut, b=instruction[2], out=JLT);
+    Or(a=zrOut, b=ngOut, out=negative);
+    Not(in=negative, out=positive);
+    And(a=positive, b=instruction[0], out=JGT);
+    Or(a=JLT, b=JEQ, out=JLE);
+    Or(a=JGT, b=JLE, out=jumpToA);
+    And(a=Ccommand, b=jumpToA, out=jump);
+    Not(in=jump, out=count);
+
+    PC(in=AregOut, load=jump, inc=count, reset=reset, out[0..14]=pc);
     
     
 }
