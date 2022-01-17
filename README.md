@@ -103,6 +103,6 @@
 
 - ~~Paser(완료)~~
 - ~~Code(완료)~~
-- SymbolTable
-- Main
+- ~~SymbolTable(완료)~~
+- ~~Main(완료)~~
 
