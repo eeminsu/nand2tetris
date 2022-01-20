@@ -115,7 +115,7 @@
 
 ### 구현
 - ~~Parser(완료)~~
-- CodeWriter(구현중)
-- Main
+- ~~CodeWriter(완료)~~
+- ~~Main(완료)~~
 
 
